@@ -7,8 +7,19 @@ namespace MyFirstProgram {
 		static Random random = new Random();
 
 		static void Main(string[] args) {
-			Console.Write("Enter the length of the list: ");
-			int length_list = int.Parse(Console.ReadLine());
+
+			int length_list = 0;
+			bool continue_ = true;
+			while (continue_) {
+				try {
+					Console.Write("Enter the length of the list: ");
+					length_list = int.Parse(Console.ReadLine());
+				} catch {
+					Console.WriteLine("Incorrect input!!!");
+					continue;
+				}
+				continue_ = false;
+			}
 
 			Console.WriteLine();
 			
@@ -18,7 +29,7 @@ namespace MyFirstProgram {
 			int[] d = new int[a.Length];
 			int[] e = new int[a.Length];
 
-			for (int i = 0; i < a.Length; i++) {
+		for (int i = 0; i < a.Length; i++) {
 				a[i] = random.Next(a.Length);
 				b[i] = random.Next(a.Length);
 				c[i] = random.Next(a.Length);
