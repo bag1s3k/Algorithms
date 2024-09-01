@@ -7,7 +7,12 @@ namespace MyFirstProgram {
 		static Random random = new Random();
 
 		static void Main(string[] args) {
-			int[] a = new int[100];
+			Console.Write("Enter the length of the list: ");
+			int length_list = int.Parse(Console.ReadLine());
+
+			Console.WriteLine();
+			
+			int[] a = new int[length_list];
 			int[] b = new int[a.Length];
 			int[] c = new int[a.Length];
 			int[] d = new int[a.Length];
