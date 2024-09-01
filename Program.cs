@@ -2,22 +2,18 @@
 using System.Diagnostics;
 using System.Linq;
 
-namespace MyFirstProgram
-{
-	class Program
-	{
+namespace MyFirstProgram {
+	class Program {
 		static Random random = new Random();
 
-		static void Main(string[] args)
-		{
+		static void Main(string[] args) {
 			int[] a = new int[100];
 			int[] b = new int[a.Length];
 			int[] c = new int[a.Length];
 			int[] d = new int[a.Length];
 			int[] e = new int[a.Length];
 
-			for (int i = 0; i < a.Length; i++)
-			{
+			for (int i = 0; i < a.Length; i++) {
 				a[i] = random.Next(a.Length);
 				b[i] = random.Next(a.Length);
 				c[i] = random.Next(a.Length);
@@ -25,63 +21,51 @@ namespace MyFirstProgram
 				e[i] = random.Next(a.Length);
 			}
 
-			// for (int i = 0; i < a.Length; i++)
-			// 	Console.Write($"{a[i]} ");
-			// Console.WriteLine();
-
-			Serad(a, SelectionSort);
-			Serad(b, InsertionSort);
-			Serad(c, BoubbleSort);
-			Serad(d, QuickSort);
-			Serad(e, LinqSort);
-
-			// for (int i = 0; i < a.Length; i++)
-			//	 Console.Write($"{a[i]} ");
+			DoTest(a, SelectionSort);
+			DoTest(b, InsertionSort);
+			DoTest(c, BobbleSort);
+			DoTest(d, QuickSort);
+			DoTest(e, LinqSort);
 
 			Console.ReadKey();
 		}
 
-		static ulong PocetKroku;
-		delegate void RadiciMetoda(int[] a);
+		static ulong Steps;
+		delegate void SortingMethod(int[] a);
 
-		static void Serad(int[] a, RadiciMetoda metoda)
-		{
-			Console.WriteLine(metoda.Method.Name);
-			PocetKroku = 0;
+		static void DoTest(int[] a, SortingMethod method) {
+			Console.WriteLine(method.Method.Name);
+			Steps = 0;
 			Stopwatch sw = new Stopwatch();
 			sw.Start();
-			metoda(a);
+			method(a);
 			double cas = sw.Elapsed.TotalMilliseconds;
 			sw.Stop();
-			Console.WriteLine("Kroků: {0:N0}", PocetKroku);
-			Console.WriteLine("Čas: {0:N5}ms", cas);
+			Console.WriteLine("Steps: {0:N0}", Steps);
+			Console.WriteLine("Time: {0:N5}ms", cas);
 			Console.WriteLine();
 		}
 
-		static void LinqSort(int[] a)
-		{
-			a = a.OrderBy(x => x).ToArray(); // OrderByDescending
+		static void LinqSort(int[] a) {
+			a = a.OrderBy(x => x).ToArray();
 		}
 
-		static void QuickSort(int[] a)
-		{
+		static void QuickSort(int[] a) {
 			QuickSort(a, 0, a.Length - 1);
 		}
-		static void QuickSort(int[] a, int iFrom, int iTo)
-		{
+
+		static void QuickSort(int[] a, int iFrom, int iTo) {
 			if (iFrom >= iTo) return;
 
 			int iMez = iFrom;
-			for (int i = iFrom + 1; i <= iTo; i++)
-			{
-				if (a[i] < a[iFrom])
-				{
+			for (int i = iFrom + 1; i <= iTo; i++) {
+				if (a[i] < a[iFrom]) {
 					++iMez;
 					int temp = a[i];
 					a[i] = a[iMez];
 					a[iMez] = temp;
 				}
-				PocetKroku++;
+				Steps++;
 			}
 			int temp_2 = a[iFrom];
 			a[iFrom] = a[iMez];
@@ -91,55 +75,44 @@ namespace MyFirstProgram
 			QuickSort(a, iMez + 1, iTo);
 		}
 
-		static void BoubbleSort(int[] a)
-		{
-			for (int i = 0; i < a.Length - 1; i++)
-			{
+		static void BobbleSort(int[] a) {
+			for (int i = 0; i < a.Length - 1; i++) {
 				bool switch_1 = false;
-				for (int j = 0; j < a.Length - 1 - i; j++)
-				{
-					if (a[j + 1] < a[j]) // zde staci otocit
-					{
+				for (int j = 0; j < a.Length - 1 - i; j++) {
+					if (a[j + 1] < a[j]) {
 						int temp = a[j];
 						a[j] = a[j + 1];
 						a[j + 1] = temp;
 						switch_1 = true;
 					}
-					PocetKroku++;
+					Steps++;
 				}
 				if (!switch_1) return;
 			}
 		}
 
-		static void InsertionSort(int[] a)
-		{
-			for (int i = 0; i < a.Length - 1; i++)
-			{
-				int j = i + 1; // index zařazovaného prvku
-				int temp = a[j]; // hodnota zařazovaného prvku
-				while (j > 0 && temp < a[j - 1])
-				{
-					a[j] = a[j - 1]; // posun většího prvku doprava
+		static void InsertionSort(int[] a) {
+			for (int i = 0; i < a.Length - 1; i++) {
+				int j = i + 1;
+				int temp = a[j];
+				while (j > 0 && temp < a[j - 1]) {
+					a[j] = a[j - 1];
 					j--;
-					PocetKroku++;
+					Steps++;
 				}
-				a[j] = temp; // zařazení prvku do setříděné části posloupnosti
+				a[j] = temp;
 			}
 		}
 
-		static void SelectionSort(int[] a)
-		{
-			for (int j = 0; j < a.Length - 1; j++)
-			{
+		static void SelectionSort(int[] a) {
+			for (int j = 0; j < a.Length - 1; j++) {
 				int min = j;
-				for (int i = j + 1; i < a.Length; i++)
-				{
-					if (a[i] < a[min]) // zde stačí prohodit znaménko pro opačný chod
+				for (int i = j + 1; i < a.Length; i++) {
+					if (a[i] < a[min])
 						min = i;
-					PocetKroku++;
+					Steps++;
 				}
-				if (j != min)
-				{
+				if (j != min) {
 					int temp = a[j];
 					a[j] = a[min];
 					a[min] = temp;
